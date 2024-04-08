@@ -6,8 +6,10 @@ use Livewire\Component;
 
 class Index extends Component
 {
+    // public $name ='';
+
     public function render()
     {
-        return view('livewire.chat.index');
+        return view('livewire.chat.index')->layout('layouts.app');
     }
 }
