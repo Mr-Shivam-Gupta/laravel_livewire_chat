@@ -10,21 +10,21 @@
             </svg>
          </button>
       </div>
-      <div class="flex gap-3 items-center overflow-x-scroll   p-2 bg-white">
+      <div class="flex gap-3 items-center overflow-x-auto   p-2 bg-white">
          <button @click="type='all'" :class="{'bg-blue-100 border-0 text-black':type=='all'}" class="inline-flex justify-center items-center rounded-full gap-x-1 text-xs font-medium px-3 lg:px-5 py-1 lg:py-2.5  border " >
          All</button>
          <button @click="type='deleted'" :class="{'bg-blue-100 border-0 text-black':type=='deleted'}" class="inline-flex justify-center items-center rounded-full gap-x-1 text-xs font-medium px-3 lg:px-5 py-1 lg:py-2.5  border " >
          Deleted</button>
       </div>
    </header>
-   <main class="overflow-y-scroll  grow h-full relative" style="contain:content">
+   <main class="overflow-y-auto  grow h-full relative" style="contain:content">
       <ul class="p-2 grid w-full space-y-2">
          <li class="py-3 hover:bg-gray-50 rounded-2xl   transition-colors duration-150 flex gap-4 relative w-full cursor-pointer px-2">
             <a href="#" class="shrink-0">
                <x-avatar/>
             </a>
             <aside class="grid grid-cols-12 w-full">
-               <a href="#" class=" col-span-11 border-b pb-2 border-gray-200  relative overflow-hidden truncate leading-5 w-full flex-nowrap">
+               <a href="{{url('chat/5')}}" class=" col-span-11 border-b pb-2 border-gray-200  relative overflow-hidden truncate leading-5 w-full flex-nowrap">
                   <div class="flex justify-between w-full items-center">
                      <h6 class=" truncate font-medium tracking-wider text-gray-500 ">John Doe</h6>
                      <small class="text-gray-700">5d</small>

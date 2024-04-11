@@ -3,7 +3,7 @@
          
          <livewire:chat.chat-list>
     </div>
-    <div class="grid w-full border-l h-full relative overflow-y-auto" style="contain:content">
+    <div class="grid w-full  border-1 h-full relative overflow-y-auto" style="contain:content">
           <livewire:chat.chat-box>
     </div>
 </div>
