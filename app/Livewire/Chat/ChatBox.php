@@ -8,7 +8,13 @@ class ChatBox extends Component
 {
     public $selectedConversation;
     public $body;
-    
+    public $loadedMessages;
+
+    public function loadMessages()
+    {
+        $this->loadedMessages = Message::where('conversation_id',$this->selectedConversation->id)->get();
+    }
+
     public function sendMessage ()
     {
         $this->validate(['body'=>'required|string']);
@@ -19,6 +25,11 @@ class ChatBox extends Component
             'body'=>$this->body
         ]);
         $this->reset('body');
+    }
+
+    public function mount()
+    {
+        $this->loadMessages();
     }
     public function render()
     {

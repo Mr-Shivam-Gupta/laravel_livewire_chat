@@ -14,20 +14,28 @@
          </div>
       </header>
       <main class="flex flex-col gap-3 p-2.5 overflow-y-auto flex-grow overscroll-contain  overflow-x-hidden w-full my-auto">
-         <div @class(['max-w-[85%] md:max-w-[78%] flex w-auto gap-2 relative mt-2 '])>
+         @if ($loadedMessages)
+            @foreach ($loadedMessages as $key => $message)
+               
+         <div @class(['max-w-[85%] md:max-w-[78%] flex w-auto gap-2 relative mt-2',
+            'ml-auto'=>$message->sender_id === auth()->id(),
+         ])>
             <div @class(['shrink-0'])>
             <x-avatar />
             </div>
                   <div @class(['flex flex-wrap text-[15px] rounded-xl p-2.5 flex-col',
-                  'rounded-bl-none border border-gray-200/40 bg-[#f6f6f8fb] text-black'=>false,
-                  'rounded-br-none bg-blue-500/80 text-white '=>true
+                  'rounded-bl-none border border-gray-200/40 bg-[#f6f6f8fb] text-black'=>!($message->sender_id === auth()->id()),
+                  'rounded-br-none bg-blue-500/80 text-white '=>$message->sender_id === auth()->id(),
                   ])>
-                  <p class="whitespace-normal truncate text-sm md:text-base tracking-wide lg:tracking-normal">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum quisquam fugiat saepe accusantium, cum quis molestiae quo alias non nam dolorem quidem commodi tempora quam facilis laborum veniam, eos architecto.</p> 
-                        <div class="ml-auto flex gap-2">
-                            <p @class(['text-xs', 'text-gray-500'=>false , 'text-white'=>true])>5:24 am</p>
-                                 <div>
+                  <p class="whitespace-normal truncate text-sm md:text-base tracking-wide lg:tracking-normal">{{$message->body}}
+                     <div class="ml-auto flex gap-2">
+                            <p @class(['text-xs', 'text-gray-500'=>!($message->sender_id === auth()->id()), 'text-white'=>$message->sender_id === auth()->id()])>5:24 am</p>
+                                 @if ($message->sender_id === auth()->id())
+                                    
+                                 
+                            <div>
                                  {{-- double tike --}}
-                                 <span @class(['text-gray-500'])>
+                                 <span @class(['text-gray-200'])>
                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
                                  <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>
                                  <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
@@ -40,9 +48,12 @@
                                  </svg> 
                                  </span> --}}
                                  </div>
+                                 @endif
                          </div>
                      </div>
          </div>
+         @endforeach
+         @endif
       </main>
    <footer class="shrink-0 z-10 bg-white inset-x-0">
       <div class="p-2 border-t">
