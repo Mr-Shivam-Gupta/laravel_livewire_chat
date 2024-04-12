@@ -43,7 +43,7 @@
                          </div>
                      </div>
          </div>
-</main>
+      </main>
    <footer class="shrink-0 z-10 bg-white inset-x-0">
       <div class="p-2 border-t">
          <form method="POST" autocapitalize="off">

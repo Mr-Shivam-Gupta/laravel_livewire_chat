@@ -19,15 +19,18 @@
    </header>
    <main class="overflow-y-auto  grow h-full relative" style="contain:content">
       <ul class="p-2 grid w-full space-y-2">
-         <li class="py-3 hover:bg-gray-50 rounded-2xl   transition-colors duration-150 flex gap-4 relative w-full cursor-pointer px-2">
+         @if ($conversations)
+            @foreach ($conversations as $key => $conversation)
+        
+         <li class="py-3 hover:bg-gray-50 rounded-2xl  transition-colors duration-150 flex gap-4 relative w-full cursor-pointer px-2 {{$conversation->id == ($selectedConversation!= null ?$selectedConversation->id:$selectedConversation )? 'bg-gray-100':''}}">
             <a href="#" class="shrink-0">
-               <x-avatar/>
+               <x-avatar src="https://source.unsplash.com/500x500?face-{{$key}}" />
             </a>
             <aside class="grid grid-cols-12 w-full">
-               <a href="{{url('chat/5')}}" class=" col-span-11 border-b pb-2 border-gray-200  relative overflow-hidden truncate leading-5 w-full flex-nowrap">
+               <a href="{{route('chat',$conversation->id)}}" class=" col-span-11 border-b pb-2 border-gray-200  relative overflow-hidden truncate leading-5 w-full flex-nowrap">
                   <div class="flex justify-between w-full items-center">
-                     <h6 class=" truncate font-medium tracking-wider text-gray-500 ">John Doe</h6>
-                     <small class="text-gray-700">5d</small>
+                     <h6 class=" truncate font-medium tracking-wider text-gray-900 ">{{$conversation->getReceiver()->name}}</h6>
+                     <small class="text-gray-700">{{$conversation->message?->last()?->created_at?->shortAbsoluteDiffForHumans()}}</small>
                   </div>
                   <div class="flex gap-x-2 items-center">
                     {{-- double tik --}}
@@ -85,6 +88,10 @@
 
             </aside>
          </li>
+         @endforeach
+         @else
+
+         @endif
       </ul>
    </main>
 </div>
