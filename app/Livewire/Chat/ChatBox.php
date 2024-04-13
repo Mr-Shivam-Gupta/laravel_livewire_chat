@@ -25,6 +25,8 @@ class ChatBox extends Component
             'body'=>$this->body
         ]);
         $this->reset('body');
+        $this->dispatch('scroll-bottom');
+        $this->loadedMessages->push($createdMessage);
     }
 
     public function mount()
