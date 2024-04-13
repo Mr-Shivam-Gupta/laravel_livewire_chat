@@ -13,7 +13,7 @@ class Conversation extends Model
         'receiver_id'
     ];
     public function messages(){
-        $this->hasMany(Message::class);
+       return $this->hasMany(Message::class);
     }
     public function getReceiver()
     {

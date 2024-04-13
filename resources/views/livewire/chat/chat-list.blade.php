@@ -40,7 +40,7 @@ class="flex flex-col transition-all h-full overflow-hidden">
                <a href="{{route('chat',$conversation->id)}}" wire:navigate class=" col-span-11 border-b pb-2 border-gray-200  relative overflow-hidden truncate leading-5 w-full flex-nowrap">
                   <div class="flex justify-between w-full items-center">
                      <h6 class=" truncate font-medium tracking-wider text-gray-900 ">{{$conversation->getReceiver()->name}}</h6>
-                     <small class="text-gray-700">{{$conversation->message?->last()?->created_at?->shortAbsoluteDiffForHumans()}}</small>
+                     <small class="text-gray-700">{{$conversation->messages?->last()?->created_at?->shortAbsoluteDiffForHumans()}}</small>
                   </div>
                   <div class="flex gap-x-2 items-center">
                     {{-- double tik --}}

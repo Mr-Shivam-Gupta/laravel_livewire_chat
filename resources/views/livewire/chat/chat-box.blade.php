@@ -17,12 +17,23 @@
         </header>
         <main id ="conversation" class="flex flex-col gap-3 p-2.5 overflow-y-auto flex-grow overscroll-contain  overflow-x-hidden w-full my-auto">
             @if ($loadedMessages)
+            @php
+               $previousMessages = null;
+            @endphp
                 @foreach ($loadedMessages as $key => $message)
+
+                @if ($key>0)
+                @php
+                $previousMessages = $loadedMessages->get($key-1);
+               @endphp
+                @endif
                     <div @class([
                         'max-w-[85%] md:max-w-[78%] flex w-auto gap-2 relative mt-2',
                         'ml-auto' => $message->sender_id === auth()->id(),
                     ])>
-                        <div @class(['shrink-0'])>
+                        <div @class(['shrink-0',
+                        'invisible'=>$previousMessages?->sender_id==$message->sender_id,
+                        'hidden'=>$message->sender_id===auth()->id() ])>
                             <x-avatar />
                         </div>
                         <div @class([

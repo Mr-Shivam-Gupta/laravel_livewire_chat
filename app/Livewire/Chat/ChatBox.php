@@ -27,6 +27,10 @@ class ChatBox extends Component
         $this->reset('body');
         $this->dispatch('scroll-bottom');
         $this->loadedMessages->push($createdMessage);
+        $this->selectedConversation->updated_at = now();
+        $this->selectedConversation->save();
+
+        $this->dispatch('chat.chat-list','refresh');
     }
 
     public function mount()
