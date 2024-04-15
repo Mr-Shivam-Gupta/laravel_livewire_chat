@@ -9,10 +9,22 @@ class ChatBox extends Component
     public $selectedConversation;
     public $body;
     public $loadedMessages;
+    public $paginate_var = 10;
 
+    public function loadMore() : void 
+    {
+        // dd('hit');
+        $this->paginate_var += 10;
+        $this->loadedMessages();
+    }
     public function loadMessages()
     {
-        $this->loadedMessages = Message::where('conversation_id',$this->selectedConversation->id)->get();
+        $count = Message::where('conversation_id',$this->selectedConversation->id)->get();
+        $this->loadedMessages = Message::where('conversation_id',$this->selectedConversation->id)
+       //
+        ->take($this->paginate_var)
+        ->get();
+        return $this->loadedMessages;
     }
 
     public function sendMessage ()
@@ -29,8 +41,9 @@ class ChatBox extends Component
         $this->loadedMessages->push($createdMessage);
         $this->selectedConversation->updated_at = now();
         $this->selectedConversation->save();
-
-        $this->dispatch('chat.chat-list','refresh');
+        $this->dispatch('refresh');
+        // $this->dispatch('livewire.chat.chat-list','refresh');
+        // $this->dispatch('chat.chat-list','refresh');
     }
 
     public function mount()

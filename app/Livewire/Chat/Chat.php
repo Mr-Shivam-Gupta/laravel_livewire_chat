@@ -14,6 +14,11 @@ class Chat extends Component
     public function mount()
     {
         $this->selectedConversation= Conversation::findOrFail($this->query);
+
+        Message::where(['conversation_id'=>$this->selectedConversation->id])
+        ->where('receiver_id',auth()->id())
+        ->whereNull('read_at')
+        ->update(['read_at'=>now()]);
     }
 
     public function render()
