@@ -1,4 +1,4 @@
-<div x-data="{height:0,scropTop: 0 ,conversationElement:document.getElementById('conversation')}" x-init="height =conversationElement.scrollHeight;$nextTick(()=>conversationElement.scrollTop=height);" @scroll-bottom.window="$nextTick(()=>conversationElement.scrollTop=height);" class="w-full overflow-hidden">
+<div x-data="{height:0,conversationElement:document.getElementById('conversation')}" x-init="height =conversationElement.scrollHeight;$nextTick(()=>conversationElement.scrollTop=height);" @scroll-bottom.window="$nextTick(()=>conversationElement.scrollTop=height);" class="w-full overflow-hidden">
     <div class="border-b flex flex-col overflow-y-auto grow h-full">
         <header class="w-full sticky inset-x-0 flex pb-[5px] pt-[5px] top-0 z-10 bg-white border-b-2">
             <div class="flex w-full items-center px-2 lg:px-4 gap-2 md:gap-5">
@@ -25,11 +25,17 @@
         </script>
         
         <main 
-         @scroll="scropTop = $el.scrollTop; if (scropTop <= 0) {  $wire.loadMore() } "
+         @scroll="scropTop = $el.scrollTop; if(scropTop <= 0){ $wire.loadMore()}"
+         @update-chat-height.window="
+         newHeight = $el.scrollHeight;
+         oldHeight = height;
+         $el.scrollTop = newHeight-oldHeight;
+         height=newHeight;
+         "
           id ="conversation" class="flex flex-col gap-3 p-2.5 overflow-y-auto flex-grow overscroll-contain  overflow-x-hidden w-full my-auto">
             @if ($loadedMessages)
             @php
-               $previousMessages = null;
+               $previousMessages = null;    
             @endphp
                 @foreach ($loadedMessages as $key => $message)
                 @if ($key>0)
@@ -48,9 +54,7 @@
                         </div>
                         <div @class([
                             'flex flex-wrap text-[15px] rounded-xl p-2.5 flex-col',
-                            'rounded-bl-none border border-gray-200/40 bg-[#f6f6f8fb] text-black' => !(
-                                $message->sender_id === auth()->id()
-                            ),
+                            'rounded-bl-none border border-gray-200/40 bg-[#f6f6f8fb] text-black' => !($message->sender_id === auth()->id()                            ),
                             'rounded-br-none bg-blue-500/80 text-white ' =>
                                 $message->sender_id === auth()->id(),
                         ])>
