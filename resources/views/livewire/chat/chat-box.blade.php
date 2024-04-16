@@ -1,4 +1,4 @@
-<div x-data="{height:0,conversationElement:document.getElementById('conversation')}" x-init="height =conversationElement.scrollHeight;$nextTick(()=>conversationElement.scrollTop=height);" @scroll-bottom.window="$nextTick(()=>conversationElement.scrollTop=height);" class="w-full overflow-hidden">
+<div x-data="{height:0,scropTop: 0 ,conversationElement:document.getElementById('conversation')}" x-init="height =conversationElement.scrollHeight;$nextTick(()=>conversationElement.scrollTop=height);" @scroll-bottom.window="$nextTick(()=>conversationElement.scrollTop=height);" class="w-full overflow-hidden">
     <div class="border-b flex flex-col overflow-y-auto grow h-full">
         <header class="w-full sticky inset-x-0 flex pb-[5px] pt-[5px] top-0 z-10 bg-white border-b-2">
             <div class="flex w-full items-center px-2 lg:px-4 gap-2 md:gap-5">
@@ -15,13 +15,23 @@
                 <h6 class="font-bold truncate">{{ $selectedConversation->getReceiver()->name }}</h6>
             </div>
         </header>
-        <main id ="conversation" class="flex flex-col gap-3 p-2.5 overflow-y-auto flex-grow overscroll-contain  overflow-x-hidden w-full my-auto">
+        <script>
+            window.addEventListener('scroll', () => {
+                let scrollTop = document.documentElement.scrollTop;
+                if (scrollTop === 0) {
+                    Livewire.emit('loadMore');
+                }
+            });
+        </script>
+        
+        <main 
+         @scroll="scropTop = $el.scrollTop; if (scropTop <= 0) {  $wire.loadMore() } "
+          id ="conversation" class="flex flex-col gap-3 p-2.5 overflow-y-auto flex-grow overscroll-contain  overflow-x-hidden w-full my-auto">
             @if ($loadedMessages)
             @php
                $previousMessages = null;
             @endphp
                 @foreach ($loadedMessages as $key => $message)
-
                 @if ($key>0)
                 @php
                 $previousMessages = $loadedMessages->get($key-1);
@@ -91,7 +101,7 @@
                         <input x-model="body" type="text" autocomplete="off" autofocus
                             placeholder="write your message here" maxlength="1700"
                             class="col-span-10 bg-gray-100 border-0 outline-0 focus:border-0 focus:ring-0 hover:ring-0 rounded-lg focus:outline-none">
-                        <button x-bind:disabled="!body.trim()" class="col-span-2 " type="submit">Send</button>
+                        <button x-bind:disabled="!body || !body.trim()" class="col-span-2 " type="submit">Send</button>
                     </div>
                 </form>
                 @error('body')
