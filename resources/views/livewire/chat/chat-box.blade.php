@@ -1,4 +1,10 @@
-<div x-data="{height:0,conversationElement:document.getElementById('conversation')}" x-init="height =conversationElement.scrollHeight;$nextTick(()=>conversationElement.scrollTop=height);" @scroll-bottom.window="$nextTick(()=>conversationElement.scrollTop=height);" class="w-full overflow-hidden">
+<div x-data="{height:0,conversationElement:document.getElementById('conversation')}" x-init="height =conversationElement.scrollHeight;$nextTick(()=>conversationElement.scrollTop=height);  
+    Echo.pricate('users.{{Auth()->user()->id}}').notification(('notification')=>{
+        if(notification['type']=='App\\Notifications\\MessageRead')
+        {
+            alert('hello message read');
+        }
+    });" @scroll-bottom.window="$nextTick(()=>conversationElement.scrollTop=conversationElement.scrollHeight);" class="w-full overflow-hidden">
     <div class="border-b flex flex-col overflow-y-auto grow h-full">
         <header class="w-full sticky inset-x-0 flex pb-[5px] pt-[5px] top-0 z-10 bg-white border-b-2">
             <div class="flex w-full items-center px-2 lg:px-4 gap-2 md:gap-5">
@@ -43,7 +49,8 @@
                 $previousMessages = $loadedMessages->get($key-1);
                @endphp
                 @endif
-                    <div @class([
+                    <div wire:key="{{time().$key}}" 
+                    @class([
                         'max-w-[85%] md:max-w-[78%] flex w-auto gap-2 relative mt-2',
                         'ml-auto' => $message->sender_id === auth()->id(),
                     ])>
