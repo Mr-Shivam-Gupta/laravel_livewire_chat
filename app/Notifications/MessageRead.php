@@ -5,6 +5,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -15,9 +16,21 @@ class MessageRead extends Notification implements ShouldBroadcast
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public $conversation_id;
+    public function __construct($conversation_id)
     {
-        //
+        $this->conversation_id = $conversation_id;
+    }
+
+     /**
+     * Get the broadcastable representation of the notification.
+     */
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+    
+        return new BroadcastMessage([
+            'conversation_id' => $this->conversation_id,
+        ]);
     }
 
     /**
