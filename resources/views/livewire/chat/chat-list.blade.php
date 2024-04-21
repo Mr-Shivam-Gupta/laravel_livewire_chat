@@ -1,12 +1,21 @@
 <div  x-data="{type:'all',query:@entangle('query')}"
    x-init="
+
    setTimeout(()=>{
       conversationElement = document.getElementById('conversation-'+query);
       if(conversationElement)
       {
          conversationElement.scrollIntoView({'behavior':'smooth'});
       }
-   }),200;"
+   }),200;
+   
+   Echo.private('users.{{Auth()->User()->id}}')
+.notification((notification)=>{
+    if(notification['type']== 'App\\Notifications\\MessageRead'|| notification['type']== 'App\\Notifications\\MessageSent')
+    {
+      $wire.$refresh();
+    }
+});"
 class="flex flex-col transition-all h-full overflow-hidden">
    <header class="px-3 z-10 bg-white sticky top-0 w-full py-2">
       <div class="border-b justify-between flex items-center pb-2">
@@ -93,7 +102,9 @@ class="flex flex-col transition-all h-full overflow-hidden">
                                 </span>
                                View Profiles
                         </button>
-                        <button class="items-center gap-3 flex w-full px-4 py-2 text-sm leading-5 text-gray-500 hover:bg-gray-100 transition-all duration-150 ease-in-out focus:outlinenone focus:bg-gray-100">
+                        <bu  onclick="confirm('Are you sure?')||event.stopImmediatePropagation()"
+                         wire:click="deleteByUser('{{encrypt($conversation->id)}}')"
+                         class="items-center gap-3 flex w-full px-4 py-2 text-sm leading-5 text-gray-500 hover:bg-gray-100 transition-all duration-150 ease-in-out focus:outlinenone focus:bg-gray-100">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                         <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
